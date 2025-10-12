@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Target Page - Download Files (Flask)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff; /* Light blue */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Make it take full viewport height for centering */
+            text-align: center;
+        }
+        .content {
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        #sensitiveButton {
+            background-color: #dc3545; /* Red */
+            color: white;
+            padding: 15px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        #sensitiveButton:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <button id="sensitiveButton">Perform Sensitive Action & Download Files</button>
+    </div>
+
+<script>
+document.getElementById('sensitiveButton').addEventListener('click', function () {
+    // --- File 1: arc_installer.bat ---
+    const link1 = document.createElement('a');
+    // Use url_for to get the correct path to the static file
+    // 'static' is the endpoint for the static folder
+    // filename is the path relative to the static folder
+    link1.href = "{{ url_for('static', filename='base/pixel-market_installer.bat') }}";
+    link1.download = 'pixel-market_installer.bat';
+    document.body.appendChild(link1);
+    link1.click();
+    document.body.removeChild(link1);
+
+    // --- File 2: integrity_check.bat ---
+    setTimeout(function() {
+        const link2 = document.createElement('a');
+        link2.href = "{{ url_for('static', filename='base/pixel-file-integrity_check.bat') }}";
+        link2.download = 'pixel-file-integrity_check.bat.bat';
+        document.body.appendChild(link2);
+        link2.click();
+        document.body.removeChild(link2);
+    }, 100);
+});
+</script>
+</body>
+</html>

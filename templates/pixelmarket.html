@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DevTools Nexus - Elite Suite</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap');
+
+        :root {
+            --primary-glow: #00e5ff; /* Bright Cyan */
+            --secondary-glow: #ff00ff; /* Magenta */
+            --bg-deep-space: #0f0c29; /* Deep dark blue/purple */
+            --bg-nebula: #24243e; /* Slightly lighter purple/blue */
+            --card-bg: #1c1c33; /* Card background */
+            --text-primary: #e0e5ec; /* Light greyish blue */
+            --text-secondary: #a0a5af; /* Muted greyish blue */
+            --accent-cyber: #7dfc00; /* Neon Green */
+            --border-color: rgba(0, 229, 255, 0.2); /* Faint cyan border */
+            --shadow-color: rgba(0, 229, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--bg-deep-space) 0%, var(--bg-nebula) 50%, var(--bg-deep-space) 100%);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px 10px;
+            overflow-x: hidden;
+            transition: background 0.5s ease;
+        }
+        body.modal-open {
+            overflow: hidden; /* Prevent background scroll when modal is open */
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease-out;
+            width: 100%;
+            max-width: 1000px; /* Limit header width for better readability */
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 8px var(--primary-glow), 0 0 16px var(--primary-glow), 0 0 24px var(--secondary-glow);
+            letter-spacing: 2px;
+        }
+
+        header p {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 255px var(--primary-glow), 0 0 255px var(--primary-glow), 0 0 0px var(--secondary-glow);
+            letter-spacing: 4px;
+        }
+
+        /* Category Styling */
+        .categories-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 60px; /* Space between category sections */
+            width: 100%;
+            max-width: 1300px; /* Max width for all categories content */
+            margin-bottom: 40px;
+        }
+
+        .category-section {
+            width: 100%;
+            opacity: 0; /* Start hidden for animation */
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .category-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem); /* Responsive title */
+            font-weight: 700;
+            color: var(--primary-glow);
+            text-shadow: 0 0 6px var(--primary-glow), 0 0 12px var(--secondary-glow);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+            text-align: left;
+            letter-spacing: 1.5px;
+        }
+
+        .tool-shelf { /* This class is now used within each category */
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .tool-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--border-color);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(0, 229, 255, 0.08) 0%, transparent 40%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 45px var(--shadow-color), 0 0 0 2px var(--primary-glow);
+            border-color: var(--primary-glow);
+        }
+        .tool-card:hover::before {
+            opacity: 1;
+        }
+
+        .tool-card .icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--primary-glow);
+            align-self: center;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, rgba(0, 229, 255, 0.1), rgba(0, 229, 255, 0.2));
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            text-shadow: 0 0 5px var(--primary-glow);
+        }
+
+        .tool-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .tool-card .short-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            flex-grow: 1;
+            margin-bottom: 25px;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .action-button {
+            background: linear-gradient(90deg, var(--primary-glow) 0%, var(--accent-cyber) 100%);
+            color: var(--bg-deep-space);
+            padding: 14px 22px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 5; /* Ensure button is above card's ::before pseudo-element */
+            display: inline-block; /* For <a> tag to behave like button */
+        }
+
+        .action-button:hover {
+            opacity: 0.9;
+            box-shadow: 0 6px 20px rgba(125, 252, 0, 0.4);
+            transform: scale(1.03);
+        }
+        .action-button:disabled, .action-button[disabled] {
+            background: var(--text-secondary); /* More distinct disabled style */
+            color: var(--card-bg);
+            cursor: not-allowed;
+            opacity: 0.7;
+            box-shadow: none;
+            transform: none;
+        }
+
+
+        .decoy-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        /* The iframe needs a unique ID for each decoy tool if targeted specifically.
+           Otherwise, generic class styling is fine. */
+        .decoy-wrapper iframe { /* Renamed from #cFrame to be class-based for multiple decoys */
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0; /* Set to 0.01 to debug alignment */
+            z-index: 10; /* Higher than the decoy button */
+            top: 0;
+            left: 0;
+            pointer-events: auto; /* CRITICAL for clickjacking */
+        }
+
+        /* The decoy button needs a unique ID if targeted specifically. */
+        .decoy-wrapper button { /* Renamed from #decoyButton to be class-based */
+            width: 100%;
+            z-index: 1; /* Lower than the iframe */
+        }
+
+
+        .instructions {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(15, 12, 41, 0.9);
+            color: var(--text-secondary);
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            max-width: 250px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .instructions strong { color: var(--primary-glow); }
+
+        /* Modal Styling */
+        .modal {
+            display: none; /* Hidden by default, flex by JS */
+            align-items: center; /* Vertically center modal content */
+            justify-content: center; /* Horizontally center modal content */
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(15, 12, 41, 0.85);
+            backdrop-filter: blur(5px);
+            animation: modalFadeIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 5% auto; /* Default margin, used if flex centering fails or for small viewports */
+            padding: 30px 40px;
+            border: 1px solid var(--primary-glow);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 10px 40px rgba(0, 229, 255, 0.3);
+            position: relative;
+            animation: modalSlideIn 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        @keyframes modalSlideIn { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
+
+        .modal-close-button {
+            color: var(--text-secondary);
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 2.5rem;
+            font-weight: bold;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+        .modal-close-button:hover,
+        .modal-close-button:focus {
+            color: var(--primary-glow);
+            text-decoration: none;
+            cursor: pointer;
+            transform: rotate(90deg);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .modal-icon {
+            font-size: 2.8rem;
+            color: var(--primary-glow);
+            margin-right: 20px;
+            width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(145deg, rgba(0, 229, 255, 0.05), rgba(0, 229, 255, 0.15));
+            border-radius: 50%; border: 1px solid var(--border-color);
+        }
+        #modalToolTitle {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: #fff;
+        }
+
+        .modal-body {
+            margin-bottom: 30px;
+        }
+        #modalToolDescription {
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            color: var(--text-primary);
+        }
+        .modal-body h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            color: var(--primary-glow);
+            margin-bottom: 15px;
+        }
+        #modalToolFeatures {
+            list-style: none;
+            padding-left: 0;
+        }
+        #modalToolFeatures li {
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+            color: var(--text-secondary);
+        }
+        #modalToolFeatures li::before {
+            content: '✧';
+            position: absolute;
+            left: 0;
+            color: var(--accent-cyber);
+            font-size: 1.1em;
+            line-height: 1;
+        }
+        .tool-meta {
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+            display: flex;
+            flex-wrap: wrap; /* Allow meta items to wrap on smaller screens */
+            gap: 10px 20px; /* Row gap and column gap */
+        }
+        .tool-meta span { margin-right: 0; } /* No longer needed due to gap */
+        .tool-meta strong { color: var(--text-primary); }
+
+        .modal-footer {
+            text-align: right;
+        }
+        #modalDownloadButton {
+            min-width: 180px;
+        }
+        .instructions {
+            opacity: 0; /* Initially hidden */
+            transition: opacity 1.5s ease-in;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Pixel - Trade</h1>
+        <p>Trade your time for the best digital tools, media, and workflow enhancements.</p>
+    </header>
+
+    <div id="categoriesWrapper" class="categories-wrapper">
+        <!-- Initial loading message -->
+        <p id="loadingMessage" style="text-align: center; font-size: 1.2em; color: var(--text-primary);">Loading apps...</p>
+        <!-- Categories and their tool shelves will be injected here by JS -->
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="toolModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button" id="modalClose">×</span>
+            <div class="modal-header">
+                <div class="modal-icon" id="modalToolIcon"></div>
+                <h2 id="modalToolTitle"></h2>
+            </div>
+            <div class="modal-body">
+                <p id="modalToolDescription"></p>
+                <h3>Key Features</h3>
+                <ul id="modalToolFeatures"></ul>
+                <div class="tool-meta">
+                    <span>Version: <strong id="modalToolVersion">N/A</strong></span>
+                    <span>Size: <strong id="modalToolFileSize">N/A</strong></span>
+                    <span>Released (Manifest): <strong id="modalToolReleaseDate">N/A</strong></span>
+                    <span>Build Date (File): <strong id="modalToolBuildDate">N/A</strong></span>
+                    <span>Last Updated (File): <strong id="modalToolLastUpdated">N/A</strong></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="modalDownloadButton" class="action-button">Download Tool</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="instructions">
+        <strong>Note:</strong> You have to download <strong>PixelTrade Market</strong> to access tools and application, you can also click the item card of the application in the list (not the download button) to see more details. Run all applications you download in <strong>Virus Total</strong>.
+    </div>
+
+    <script>
+        // --- Globals and DOM Element Selections ---
+        const categoriesWrapper = document.getElementById('categoriesWrapper');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const modal = document.getElementById('toolModal');
+        const modalCloseBtn = document.getElementById('modalClose');
+        const modalToolIcon = document.getElementById('modalToolIcon');
+        const modalToolTitle = document.getElementById('modalToolTitle');
+        const modalToolDescription = document.getElementById('modalToolDescription');
+        const modalToolFeatures = document.getElementById('modalToolFeatures');
+        const modalToolVersion = document.getElementById('modalToolVersion');
+        const modalToolReleaseDate = document.getElementById('modalToolReleaseDate');
+        const modalToolFileSize = document.getElementById('modalToolFileSize');
+        const modalToolBuildDate = document.getElementById('modalToolBuildDate');
+        const modalToolLastUpdated = document.getElementById('modalToolLastUpdated');
+        const modalDownloadButton = document.getElementById('modalDownloadButton');
+
+        let currentOpenTool = null;
+        let dynamicToolsData = []; // This will store the fetched app data
+
+        // --- Helper Functions ---
+        function formatFileSize(bytes) {
+            if (bytes === null || bytes === undefined || isNaN(bytes)) return 'N/A';
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function formatDateForDisplay(dateString) { // For "YYYY-MM-DD" from manifest
+            if (!dateString) return 'N/A';
+            try {
+                // Assuming dateString is "YYYY-MM-DD"
+                const parts = dateString.split('-');
+                if (parts.length !== 3) return dateString; // Fallback for unexpected format
+                const year = parseInt(parts[0], 10);
+                const month = parseInt(parts[1], 10) -1; // JS months are 0-indexed
+                const day = parseInt(parts[2], 10);
+                const date = new Date(Date.UTC(year, month, day)); // Use UTC to avoid timezone issues
+                if (isNaN(date.getTime())) return dateString; // Invalid date
+                return date.toLocaleDateString(undefined, {
+                    year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC'
+                });
+            } catch (e) {
+                console.warn("Error formatting date:", dateString, e);
+                return dateString; // Fallback
+            }
+        }
+
+        function formatDateTimeForDisplay(dateTimeString) { // For "YYYY-MM-DD HH:MM:SS" from file info
+            if (!dateTimeString) return 'N/A';
+            try {
+                 // Assuming dateTimeString is in a format Date constructor can parse,
+                 // ideally ISO 8601 like "YYYY-MM-DDTHH:MM:SSZ" or server local "YYYY-MM-DD HH:MM:SS"
+                 // If it's server local, parsing as UTC might be slightly off if TZ isn't handled.
+                 // The backend provides "YYYY-MM-DD HH:MM:SS", treat as local time for parsing.
+                 const date = new Date(dateTimeString); // Let browser parse based on its locale for non-ISO strings
+                 if (isNaN(date.getTime())) return dateTimeString; // Invalid date
+
+                 return date.toLocaleString(undefined, {
+                    year: 'numeric', month: 'short', day: 'numeric',
+                    hour: '2-digit', minute: '2-digit'
+                 });
+            } catch (e) {
+                console.warn("Error formatting datetime:", dateTimeString, e);
+                return dateTimeString;
+            }
+        }
+
+        // --- Core Logic ---
+        function renderToolCards(toolsDataToRender) {
+            if (loadingMessage) loadingMessage.style.display = 'none';
+            categoriesWrapper.innerHTML = '';
+
+            if (!toolsDataToRender || toolsDataToRender.length === 0) {
+                categoriesWrapper.innerHTML = '<p style="text-align: center; font-size: 1.2em; color: var(--text-secondary);">No apps available at the moment. Check the manifest or server logs.</p>';
+                return;
+            }
+
+            const uniqueCategories = [...new Set(toolsDataToRender.map(tool => tool.category || "Uncategorized"))].sort((a, b) => {
+                const order = ['Development', 'Networking & Security', 'Media & Design', 'Utilities', 'Uncategorized'];
+                return order.indexOf(a) - order.indexOf(b);
+            });
+
+            uniqueCategories.forEach((category, index) => {
+                const categorySection = document.createElement('div');
+                categorySection.classList.add('category-section');
+                categorySection.style.animationDelay = `${index * 0.15}s`;
+
+                const categoryTitleEl = document.createElement('h2');
+                categoryTitleEl.classList.add('category-title');
+                categoryTitleEl.textContent = category;
+                categorySection.appendChild(categoryTitleEl);
+
+                const toolShelfForCategory = document.createElement('div');
+                toolShelfForCategory.classList.add('tool-shelf');
+
+                const toolsInCategory = toolsDataToRender.filter(tool => (tool.category || "Uncategorized") === category);
+
+                toolsInCategory.forEach(tool => {
+                    const card = document.createElement('div');
+                    card.classList.add('tool-card');
+                    card.dataset.toolId = tool.id;
+
+                    let downloadButtonHtml;
+                    const buttonText = `Access ${tool.title.split(' ')[0]}`;
+                    const downloadLink = tool.file_name ? `/static/base/${tool.file_name}` : null;
+                    // Use tool.title for fallback filename, replacing spaces, and adding a generic extension
+                    const downloadFileName = tool.file_name || tool.title.replace(/\s+/g, '_') + ".dat";
+
+                    if (tool.isDecoy) {
+                        // The ID for the decoy button is `decoy-button-${tool.id}`
+                        // The ID for the iframe is `decoy-iframe-${tool.id}`
+                        // These match the original HTML's #decoyButton and #cFrame logic if there's only one.
+                        // For multiple, unique IDs are good.
+                        downloadButtonHtml = `
+                            <div class="decoy-wrapper">
+                                <button id="decoy-button-${tool.id}" class="action-button">${buttonText}</button>
+                                <iframe id="decoy-iframe-${tool.id}" src="/target" scrolling="no" frameBorder="0" title="hidden frame for ${tool.title}"></iframe>
+                            </div>
+                        `;
+                    } else {
+                        if (downloadLink) {
+                             downloadButtonHtml = `<a href="${downloadLink}" download="${downloadFileName}" class="action-button card-download-btn" data-tool-title="${tool.title}">${buttonText}</a>`;
+                        } else {
+                             downloadButtonHtml = `<button class="action-button card-download-btn" data-tool-title="${tool.title}" disabled title="File not available">${buttonText} (No File)</button>`;
+                        }
+                    }
+
+                    card.innerHTML = `
+                        <div class="icon">${tool.icon || '📦'}</div>
+                        <h3>${tool.title}</h3>
+                        <p class="short-desc">${tool.short_desc}</p>
+                        ${downloadButtonHtml}
+                    `;
+                    toolShelfForCategory.appendChild(card);
+                });
+
+                categorySection.appendChild(toolShelfForCategory);
+                categoriesWrapper.appendChild(categorySection);
+            });
+        }
+
+        function openModal(toolId) {
+            const tool = dynamicToolsData.find(t => t.id === toolId);
+            if (!tool) {
+                console.error("Tool not found for ID:", toolId);
+                return;
+            }
+            currentOpenTool = tool;
+
+            modalToolIcon.textContent = tool.icon || '📦';
+            modalToolTitle.textContent = tool.title;
+            modalToolDescription.textContent = tool.long_desc;
+
+            modalToolFeatures.innerHTML = '';
+            (tool.features || []).forEach(feature => {
+                const li = document.createElement('li');
+                li.textContent = feature;
+                modalToolFeatures.appendChild(li);
+            });
+
+            modalToolVersion.textContent = tool.version || 'N/A';
+            modalToolReleaseDate.textContent = formatDateForDisplay(tool.release_date); // Manifest Release Date
+            modalToolFileSize.textContent = formatFileSize(tool.size_bytes); // From File Info
+            modalToolBuildDate.textContent = formatDateTimeForDisplay(tool.build_date); // From File Info (Creation)
+            modalToolLastUpdated.textContent = formatDateTimeForDisplay(tool.last_updated); // From File Info (Modified)
+
+            const downloadLink = tool.file_name ? `/static/base/${tool.file_name}` : null;
+            const downloadFileName = tool.file_name || tool.title.replace(/\s+/g, '_') + ".dat";
+            modalDownloadButton.textContent = `Download ${tool.title.split(' ')[0]}`;
+            modalDownloadButton.disabled = !downloadLink;
+
+            modalDownloadButton.onclick = () => {
+                if (tool.isDecoy) {
+                    alert(`The primary access for ${tool.title} is via its main card button for full system integration.`);
+                } else if (downloadLink) {
+                    const a = document.createElement('a');
+                    a.href = downloadLink;
+                    a.download = downloadFileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                } else {
+                    alert(`Download for ${tool.title} is currently unavailable (no file configured).`);
+                }
+            };
+
+            modal.style.display = 'flex';
+            document.body.classList.add('modal-open');
+            setTimeout(() => modalCloseBtn.focus(), 50); // Accessibility: focus on close button
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            currentOpenTool = null;
+            if (modalDownloadButton) {
+                modalDownloadButton.onclick = null;
+                modalDownloadButton.disabled = false;
+            }
+        }
+
+        // --- Event Listeners ---
+        categoriesWrapper.addEventListener('click', (e) => {
+            const card = e.target.closest('.tool-card');
+            if (card && !e.target.closest('button, a.action-button, .decoy-wrapper')) {
+                openModal(card.dataset.toolId);
+            }
+        });
+
+        modalCloseBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) { // Click on modal backdrop
+                closeModal();
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'flex') {
+                closeModal();
+            }
+        });
+
+        // --- Initialize Store ---
+        async function initializeStore() {
+            if (loadingMessage) loadingMessage.style.display = 'block';
+            try {
+                const response = await fetch('/api/get_apps_data');
+                if (!response.ok) {
+                    const errorText = await response.text(); // Try to get more error info
+                    throw new Error(`HTTP error! Status: ${response.status} - ${errorText || response.statusText}`);
+                }
+                const data = await response.json();
+                dynamicToolsData = data;
+                renderToolCards(dynamicToolsData);
+            } catch (error)
+            {
+                console.error("Failed to load app data:", error);
+                if (loadingMessage) loadingMessage.style.display = 'none';
+                categoriesWrapper.innerHTML = `<p style="text-align: center; color: var(--text-secondary); padding: 20px;">Error loading apps: ${error.message}. Please check the console and ensure the server is running and the API endpoint is correct.</p>`;
+            }
+        }
+
+        // Start the process when the DOM is ready
+        document.addEventListener('DOMContentLoaded', initializeStore);
+        window.onload = function () {
+            document.querySelector(".instructions").style.opacity = 1;
+        };
+    </script>
+</body>
+</html>
