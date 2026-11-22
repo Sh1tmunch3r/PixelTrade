@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://sh1tmunch3r.github.io/PixelTrade/sitemap.xml

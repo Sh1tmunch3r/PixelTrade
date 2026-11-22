@@ -1,0 +1,43 @@
+[
+  {
+    "id": "my-first-app",
+    "name": "My First App",
+    "tagline": "Replace this with one line about what your app does.",
+    "description": "This is a sample app so your site isn't empty on day one. Open it in the Apps tab to change the name, add screenshots and a download link, or delete it.",
+    "category": "desktop",
+    "status": "live",
+    "version": "v1.0",
+    "platform": "Windows, macOS & Linux",
+    "featured": true,
+    "accent": "studio",
+    "glyph": "sparkles",
+    "iconImage": "",
+    "cover": "",
+    "screenshots": [],
+    "metricLabel": "",
+    "metricValue": "",
+    "techStack": [],
+    "primaryLabel": "Download",
+    "primaryUrl": "",
+    "pageUrl": "",
+    "repoUrl": "",
+    "docsUrl": "",
+    "videoUrl": "",
+    "installCommand": "",
+    "features": [
+      "Fast and lightweight",
+      "Works offline",
+      "Free updates"
+    ],
+    "embedTitle": "",
+    "embedCode": "",
+    "changelog": [
+      {
+        "ver": "v1.0",
+        "date": "",
+        "note": "First release."
+      }
+    ],
+    "community": false
+  }
+]
