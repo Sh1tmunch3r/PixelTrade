@@ -346,6 +346,9 @@ export function publicApp(app) {
   const o = { ...app };
   for (const k of PRIVATE_FIELDS) delete o[k];
   if (o.author) o.author = { name: o.author.name || '', url: o.author.url || '' };
+  // Private repository (detected by auto-sync): no Source button or GitHub link on the public site.
+  if (o.repoPrivate) delete o.repoUrl;
+  delete o.repoPrivate; delete o.licensed;
   return o;
 }
 
