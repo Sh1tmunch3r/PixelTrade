@@ -283,3 +283,31 @@ button.btn-soft { cursor: pointer; font-family: inherit; }
 .detail .md h3, .detail .md h4, .detail .md h5, .detail .md h6 { font-family: var(--font); text-transform: none; color: var(--text); font-weight: 750; letter-spacing: -.015em; }
 .detail .md h3 { font-size: 21px; margin: 26px 0 10px; } .detail .md h4 { font-size: 18px; margin: 24px 0 10px; } .detail .md h5 { font-size: 15.5px; margin: 20px 0 8px; } .detail .md h6 { font-size: 14px; color: var(--soft); margin: 18px 0 8px; }
 .detail .md > :first-child { margin-top: 0; }
+
+/* ---------- perks ---------- */
+.perk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 18px; }
+.perk { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 22px; border-radius: var(--r, 20px); overflow: hidden; isolation: isolate;
+  background: linear-gradient(160deg, rgba(255,255,255,.055), rgba(255,255,255,.015)); border: 1px solid var(--line2); transition: transform .3s var(--ease), border-color .3s, box-shadow .3s; }
+.perk::before { content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit; padding: 1px; background: linear-gradient(135deg, var(--a1), transparent 40%, transparent 60%, var(--a2));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: .55; transition: opacity .3s; }
+.perk-glow { position: absolute; z-index: -1; width: 220px; height: 220px; right: -80px; top: -90px; border-radius: 50%; background: radial-gradient(circle, var(--a1), transparent 70%); opacity: .22; filter: blur(10px); transition: opacity .3s, transform .5s var(--ease); }
+.perk:hover { transform: translateY(-4px); box-shadow: 0 24px 50px -24px var(--a1); }
+.perk:hover::before { opacity: 1; }
+.perk:hover .perk-glow { opacity: .38; transform: scale(1.15); }
+.perk.gone { opacity: .55; filter: saturate(.6); }
+.perk-top { display: flex; align-items: center; gap: 10px; }
+.perk-ico { display: grid; place-items: center; flex: none; width: 46px; height: 46px; border-radius: 14px; font-size: 22px; color: #0A0C16; background: linear-gradient(135deg, var(--a1), var(--a2)); box-shadow: 0 10px 26px -10px var(--a1); }
+.perk-kind { font: 600 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.perk-flag { margin-left: auto; padding: 4px 9px; border-radius: 999px; font: 600 10.5px var(--mono); letter-spacing: .04em; color: #FDE68A; background: rgba(251,191,36,.1); border: 1px solid rgba(251,191,36,.25); white-space: nowrap; }
+.perk-flag.ok { color: #A7F3D0; background: rgba(45,212,191,.1); border-color: rgba(45,212,191,.3); display: inline-flex; gap: 4px; align-items: center; }
+.perk h3 { margin: 4px 0 0; font-size: 19px; letter-spacing: -.01em; }
+.perk > p { margin: 0; color: var(--muted); font-size: 14px; }
+.perk-how { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+.perk-how li { display: flex; gap: 9px; align-items: flex-start; font-size: 13.5px; color: var(--soft); line-height: 1.45; }
+.perk-how li .i { flex: none; margin-top: 2px; color: var(--a1); }
+.perk-how a { color: var(--text); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--a1) 60%, transparent); text-underline-offset: 3px; }
+.perk-how b { color: var(--text); }
+.perk-foot { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 8px; flex-wrap: wrap; }
+.perk-foot .sp { flex: 1; }
+.perk-foot .btn-acc { background: linear-gradient(120deg, var(--a1), var(--a2)); color: #0A0C16; }
+.perk-holders { display: inline-flex; align-items: center; gap: 5px; font: 600 11px var(--mono); color: var(--dim); }

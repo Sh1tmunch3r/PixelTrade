@@ -300,7 +300,7 @@ export function detailHTML(app, opts = {}) {
   if (app.docsUrl) links.push(`<a class="btn-soft" href="${esc(href(app.docsUrl, base))}"${ext(app.docsUrl)}>${icon('book')}Docs</a>`);
   if (app.videoUrl && !yt) links.push(`<a class="btn-soft" href="${esc(href(app.videoUrl, base))}" target="_blank" rel="noopener">${icon('video')}Watch video</a>`);
   if (!opts.preview) links.push(`<button type="button" class="btn-soft share" data-share="${esc(app.id)}">${icon('share')}<span>Share</span></button>`);
-  return `<div class="detail" style="${accentStyle(app)}">
+  return `<div class="detail" data-detail="${esc(app.id)}" style="${accentStyle(app)}">
   <header class="d-head">${appIcon(app, opts, 'lg')}<div class="d-title"><div class="d-row"><h2 id="dlg-title">${esc(app.name)}</h2>${app.version ? `<span class="ver-chip">${esc(app.version)}</span>` : ''}${statusPill(app, true)}${app.community ? `<span class="cpill">${icon('users')}Community</span>` : ''}</div><p>${esc(app.tagline)}</p>${byline(app, base)}</div></header>
   ${shots.length ? `<div class="d-gallery"><div class="d-stage"><img src="${esc(media(shots[0], mb))}" alt="${esc(app.name)} screenshot"></div>${shots.length > 1 ? `<div class="d-thumbs">${shots.map((s, i) => `<button type="button" class="${i ? '' : 'on'}" data-src="${esc(media(s, mb))}" aria-label="Screenshot ${i + 1}"><img src="${esc(media(s, mb))}" alt="" loading="lazy"></button>`).join('')}</div>` : ''}</div>` : `<div class="d-gallery">${coverHTML(app, opts)}</div>`}
   <div class="d-grid">
@@ -442,3 +442,49 @@ export function mdPlain(src) {
     .replace(/\s+/g, ' ').trim();
 }
 export const clip = (s, n) => (s.length > n ? s.slice(0, n - 1).replace(/\s+\S*$/, '') + '…' : s);
+
+// ---------- perks ----------
+// [icon, label, what it is]. Shared by the hub's perk maker, the site builder and the site script.
+export const PERK_KINDS = {
+  submit: ['send', 'App submissions', 'Unlocks the form to submit your own apps to the showcase.'],
+  download: ['download', 'Exclusive download', 'A file, build or bonus only perk holders can download.'],
+  early: ['zap', 'Early access', 'Get an app or update before everyone else.'],
+  discount: ['tag', 'Discount code', 'A code that takes money off something.'],
+  discord: ['discord', 'Discord role', 'A private channel or a special role in the community.'],
+  secret: ['lock', 'Secret message', 'Hidden text: a story, tips, a thank-you, a puzzle.'],
+  key: ['key', 'Licence key', 'A unique key for each holder, from a list you paste in.'],
+  wall: ['crown', 'Wall badge', 'A special spot on the supporters wall.'],
+  credits: ['film', 'In the credits', 'Their name in an app’s credits or about screen.'],
+  vote: ['chart', 'Roadmap vote', 'A say in what gets built next.'],
+  beta: ['activity', 'Beta tester', 'Test new builds and report bugs first.'],
+  support: ['mail', 'Priority support', 'A faster line to you for help.'],
+  shoutout: ['megaphone', 'Shout-out', 'A thank-you in a video, stream or post.'],
+  source: ['github', 'Source access', 'Access to a private repository.'],
+  assets: ['palette', 'Asset pack', 'Wallpapers, icons, sounds, presets.'],
+  custom: ['gift', 'Custom perk', 'Anything you like.']
+};
+export const perkKind = t => PERK_KINDS[t] || PERK_KINDS.custom;
+const perkDate = d => { try { return new Date(d + 'T00:00:00').toLocaleDateString('en', { day: 'numeric', month: 'short', year: 'numeric' }); } catch { return d; } };
+const names = (list, all) => { const n = list.map(a => a.name); return n.length < 2 ? n[0] || '' : `${n.slice(0, -1).join(', ')} ${all ? 'and' : 'or'} ${n.at(-1)}`; };
+// How a perk is unlocked, as short lines. money(amount) formats a price in the site currency.
+export function perkHowHTML(p, money = v => String(v), base = '') {
+  const li = (ic, html) => `<li>${icon(ic)}<span>${html}</span></li>`;
+  return (p.how || []).map(h =>
+    h.k === 'total' ? li('can', `Support with <b>${esc(money(h.amount))}</b> or more in total`)
+    : h.k === 'buy' ? li('card', `Get it on its own for <b>${esc(money(h.price))}</b>`)
+    : h.k === 'apps' ? li('store', `Included when you buy ${h.apps.map(a => `<a href="${base}apps/${encodeURIComponent(a.id)}/" data-app="${esc(a.id)}">${esc(a.name)}</a>`).join(h.all ? ' and ' : ' or ')}`)
+    : h.k === 'drop' ? li('sparkles', `Lucky drop: ${h.apps.map(a => `<b>${esc(+a.chance >= 1 ? Math.round(a.chance) : a.chance)}%</b> chance when you download <a href="${base}apps/${encodeURIComponent(a.id)}/" data-app="${esc(a.id)}">${esc(a.name)}</a>`).join(', ')}`)
+    : li('gift', 'Given by the studio to people who help out')).join('');
+}
+export function perkCardHTML(p, o = {}) {
+  const a = accentOf(p.accent), [, kind] = perkKind(p.type);
+  const buy = (p.how || []).find(h => h.k === 'buy');
+  const flags = [p.left != null ? (p.left ? `Only ${p.left} left` : 'All claimed') : '', p.endsAt ? `Until ${perkDate(p.endsAt)}` : '', p.days ? `Lasts ${p.days} day${p.days === 1 ? '' : 's'}` : ''].filter(Boolean);
+  return `<article class="perk${p.left === 0 ? ' gone' : ''}" data-perk="${esc(p.id)}" style="--a1:${a.a1};--a2:${a.a2}">
+  <div class="perk-glow"></div>
+  <div class="perk-top"><span class="perk-ico">${icon(p.icon || perkKind(p.type)[0])}</span><span class="perk-kind">${esc(kind)}</span>${flags.length ? `<span class="perk-flag">${esc(flags[0])}</span>` : ''}</div>
+  <h3>${esc(p.name)}</h3>${p.tagline ? `<p>${esc(p.tagline)}</p>` : ''}
+  <ul class="perk-how">${perkHowHTML(p, o.money, o.base || '')}</ul>
+  <div class="perk-foot">${buy && p.left !== 0 ? `<a class="btn-acc" href="${esc(buy.url)}" target="_blank" rel="noopener">${icon('card')}${esc(buy.label || 'Get this perk')}</a>` : ''}<span class="sp"></span>${p.holders ? `<span class="perk-holders">${icon('users')}${p.holders} ${p.holders === 1 ? 'holder' : 'holders'}</span>` : ''}${flags.slice(1).map(f => `<span class="perk-holders">${esc(f)}</span>`).join('')}</div>
+</article>`;
+}

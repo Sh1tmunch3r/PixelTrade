@@ -355,3 +355,48 @@ body:has(dialog[open]) .cafe-float { opacity: 0; pointer-events: none; }
 .dl-foot .i { vertical-align: -2px; margin-right: 6px; }
 .dl-main ~ .cafe-float { display: none; }
 .dl-ico .i, .dl-file .btn .i, .dl-keep .btn .i, .dl-ctas .btn .i, .dl-meta .btn .i { flex: none; }
+
+/* ---------- perks (cards live in shared/showcase.css) ---------- */
+.perk-cta { display: flex; align-items: center; gap: 16px; margin-top: 22px; padding: 18px 20px; border-radius: 18px; background: rgba(255,255,255,.03); border: 1px dashed var(--line2); --a1: #8B5CF6; --a2: #38BDF8; }
+.perk-cta > div { flex: 1; } .perk-cta b { font-size: 16px; } .perk-cta p { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
+.perk-cta .btn { border: 0; cursor: pointer; font-family: inherit; }
+#perks .sec-head .btn { border: 1px solid var(--line2); cursor: pointer; font-family: inherit; }
+@media (max-width: 640px) { .perk-cta { flex-direction: column; align-items: flex-start; } }
+
+/* vault + drops dialog */
+.perk-dlg .dlg-scroll { position: relative; }
+.perk-hero-ico { background: linear-gradient(135deg, #C4B5FD, #8B5CF6); box-shadow: 0 12px 30px -10px rgba(139,92,246,.8); color: #0A0C16; }
+.perk-wait { display: flex; gap: 10px; align-items: center; padding: 30px 4px; color: var(--muted); }
+.perk-wait .spinner, .perk-dlg .spinner { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,.15); border-top-color: #A78BFA; animation: perkspin .8s linear infinite; display: inline-block; }
+@keyframes perkspin { to { transform: rotate(360deg); } }
+.perk-owned { display: grid; gap: 14px; }
+.perk-own { display: flex; flex-direction: column; gap: 12px; padding: 18px; border-radius: 16px; background: linear-gradient(160deg, color-mix(in srgb, var(--a1) 12%, transparent), rgba(255,255,255,.02)); border: 1px solid color-mix(in srgb, var(--a1) 35%, transparent); }
+.perk-own .perk-top > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.perk-own .perk-top b { font-size: 16px; }
+.perk-text { color: var(--soft); font-size: 14.5px; line-height: 1.6; }
+.perk-text p { margin: 0 0 8px; }
+.perk-secret { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 12px; border-radius: 12px; background: rgba(0,0,0,.3); border: 1px solid var(--line2); }
+.perk-secret small { flex-basis: 100%; font: 600 10.5px var(--mono); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+.perk-secret code { flex: 1; min-width: 0; font: 600 15px var(--mono); letter-spacing: .06em; color: #fff; overflow-wrap: anywhere; }
+.perk-secret code.perk-blob { font-size: 11px; letter-spacing: 0; font-weight: 400; color: var(--soft); max-height: 70px; overflow: auto; }
+.perk-secret .btn, .perk-row .btn { border: 1px solid var(--line2); cursor: pointer; font-family: inherit; }
+.perk-note { display: flex; gap: 9px; align-items: flex-start; margin: 0 0 14px; padding: 10px 12px; border-radius: 12px; font-size: 13.5px; color: var(--soft); background: rgba(56,189,248,.07); border: 1px solid rgba(56,189,248,.2); }
+.perk-note .i { flex: none; margin-top: 2px; color: #7DD3FC; }
+.perk-own .perk-note { margin: 0; }
+.perk-acts { display: flex; gap: 8px; flex-wrap: wrap; }
+.perk-acts:empty { display: none; }
+.perk-acts .btn-acc { background: linear-gradient(120deg, var(--a1), var(--a2)); color: #0A0C16; border: 0; cursor: pointer; font-family: inherit; }
+.perk-fine { margin: 16px 0 0; font-size: 13px; color: var(--dim); display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.perk-fine a, .linkish { color: var(--soft); background: none; border: 0; padding: 0; font: inherit; text-decoration: underline; cursor: pointer; }
+.perk-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+.perk-row .btn { border: 0; cursor: pointer; font-family: inherit; }
+.perk-f2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 560px) { .perk-f2 { grid-template-columns: 1fr; } }
+.perk-win { text-align: center; padding-right: 0 !important; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.perk-win .comm-ico { width: 74px; height: 74px; font-size: 34px; border-radius: 22px; animation: perkpop .7s cubic-bezier(.2,1.6,.4,1) both; }
+.perk-kicker { display: inline-flex; gap: 6px; align-items: center; padding: 5px 11px; border-radius: 999px; font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: #FDE68A; background: rgba(251,191,36,.1); border: 1px solid rgba(251,191,36,.3); }
+@keyframes perkpop { from { transform: scale(.3) rotate(-20deg); opacity: 0; } to { transform: none; opacity: 1; } }
+.perk-confetti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 5; }
+.perk-confetti i { position: absolute; top: -12px; width: 8px; height: 14px; border-radius: 2px; animation: perkfall linear forwards; }
+@keyframes perkfall { to { transform: translateY(110vh) rotate(720deg); opacity: .3; } }
+@media (prefers-reduced-motion: reduce) { .perk, .perk-glow, .perk-win .comm-ico { transition: none; animation: none; } .perk-confetti { display: none; } }
