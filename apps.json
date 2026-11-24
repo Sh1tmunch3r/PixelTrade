@@ -8,12 +8,26 @@
     "status": "live",
     "version": "v1.0",
     "platform": "Windows, macOS & Linux",
+    "price": "",
+    "requirements": "",
+    "badge": "",
     "featured": true,
     "accent": "studio",
     "glyph": "sparkles",
-    "iconImage": "",
-    "cover": "",
-    "screenshots": [],
+    "iconImage": "my-first-app/icon.png",
+    "cover": "my-first-app/pylerium-manager-social-1200x630.png",
+    "screenshots": [
+      "my-first-app/pylerium-manager-banner-1920x1080.png",
+      "my-first-app/pylerium-manager-feature-editor.png",
+      "my-first-app/pylerium-manager-feature-licences.png",
+      "my-first-app/pylerium-manager-feature-live.png",
+      "my-first-app/pylerium-manager-feature-store.png",
+      "my-first-app/pylerium-manager-feature-tax.png",
+      "my-first-app/pylerium-manager-feature-website.png",
+      "my-first-app/pylerium-manager-social-1200x630-2.png",
+      "my-first-app/pylerium-manager-square-1080.png",
+      "my-first-app/pylerium-manager-story-1080x1920.png"
+    ],
     "metricLabel": "",
     "metricValue": "",
     "techStack": [],
@@ -38,6 +52,8 @@
         "note": "First release."
       }
     ],
-    "community": false
+    "community": false,
+    "updatedAt": "2026-11-23",
+    "socialImage": "my-first-app/social-mwsvk56k.png"
   }
 ]

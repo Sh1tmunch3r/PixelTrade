@@ -48,6 +48,11 @@ export const SOCIALS = {
   linkedin:  { label: 'LinkedIn',  icon: 'linkedin',  match: /linkedin\.com/i },
   patreon:   { label: 'Patreon',   icon: 'patreon',   match: /patreon\.com/i },
   kofi:      { label: 'Ko-fi',     icon: 'coffee',    match: /ko-fi\.com/i },
+  mastodon:  { label: 'Mastodon',  icon: 'mastodon',  match: /mastodon\.|mstdn\.|fosstodon\./i },
+  telegram:  { label: 'Telegram',  icon: 'telegram',  match: /(^|\/\/)(t\.me|telegram\.me)\//i },
+  devto:     { label: 'DEV',       icon: 'devto',     match: /(^|\/\/)dev\.to\//i },
+  itch:      { label: 'itch.io',   icon: 'itch',      match: /itch\.io/i },
+  producthunt: { label: 'Product Hunt', icon: 'producthunt', match: /producthunt\.com/i },
   email:     { label: 'Email',     icon: 'mail',      match: /^mailto:/i },
   website:   { label: 'Website',   icon: 'globe',     match: /./ }
 };
@@ -143,6 +148,15 @@ const P = {
   info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',
   // brand marks (simplified line versions)
   youtube: '<path d="M2.5 17a24 24 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.6 49.6 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24 24 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.6 49.6 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/>',
+  plug: '<path d="M12 22v-5"/><path d="M9 8V2M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/>',
+  stripe: '<rect x="2" y="4" width="20" height="16" rx="4"/><path d="M14.5 9.2c-.6-.5-1.5-.8-2.5-.8-1.4 0-2.4.7-2.4 1.7 0 2.4 5 1.4 5 3.9 0 1.1-1.1 1.8-2.6 1.8-1.1 0-2.2-.4-2.9-1"/>',
+  cloudflare: '<path d="M17.5 18H6a4 4 0 0 1-.6-7.96A6 6 0 0 1 17 9a4.5 4.5 0 0 1 .5 9z"/><path d="M9 14h7"/>',
+  itch: '<path d="M3 9 5 4h14l2 5"/><path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"/><path d="M5 12v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/><path d="M10 15h.01M14 15h.01M11 17.5h2"/>',
+  mastodon: '<path d="M21 13.5c-.3 1.6-2.6 3.3-5.3 3.6-1.4.2-2.8.3-4.3.2-2.4-.1-4.3-.6-4.3-.6v.7c.3 2.4 2.3 2.5 4.2 2.6 1.9 0 3.6-.5 3.6-.5l.1 1.7s-1.3.7-3.7.8c-1.3.1-2.9 0-4.8-.5C2.5 20.5 2.3 16.5 2.2 12.5V8.9c0-4.2 2.7-5.4 2.7-5.4C6.3 2.8 8.7 2.5 11.2 2.5h.1c2.5 0 4.9.3 6.3 1 0 0 2.7 1.2 2.7 5.4 0 0 0 3.1-.4 4.6z"/><path d="M8.5 12V8.6c0-1 .7-1.8 1.7-1.8s1.8.8 1.8 1.8V11M12 11V8.6c0-1 .8-1.8 1.8-1.8s1.7.8 1.7 1.8V12"/>',
+  telegram: '<path d="M21.5 3.5 2.8 10.7c-.9.4-.9 1.6.1 1.9l4.6 1.4 1.8 5.6c.3.8 1.2 1 1.8.4l2.6-2.5 4.7 3.5c.7.5 1.6.1 1.8-.7L22.9 4.9c.2-.9-.6-1.7-1.4-1.4z"/><path d="m7.5 14 9.5-6.5-6.8 8"/>',
+  ollama: '<path d="M8 5.5V3.6c0-.9.8-1.4 1.4-.8l1 1.2M16 5.5V3.6c0-.9-.8-1.4-1.4-.8l-1 1.2"/><path d="M6.5 11.5C6.5 8 9 5.5 12 5.5s5.5 2.5 5.5 6v3.5c1 .8 1.5 2 1.5 3.3 0 1.5-.7 2.7-1.7 3.2H6.7C5.7 21 5 19.8 5 18.3c0-1.3.5-2.5 1.5-3.3z"/><path d="M10 12.5h.01M14 12.5h.01"/><path d="M10.7 15.5c.7.6 1.9.6 2.6 0"/>',
+  sparkle: '<path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2z"/><path d="M19 3v4M17 5h4"/>',
+  devto: '<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M6.5 9v6h1.2a1.8 1.8 0 0 0 1.8-1.8v-2.4A1.8 1.8 0 0 0 7.7 9z"/><path d="M14 9h-2.2v6H14M11.8 12h1.6"/><path d="M15.6 9l1.4 6 1.4-6"/>',
   xlogo: '<path d="M4 4h4.5L20 20h-4.5z"/><path d="M20 4l-6.6 7.2M4 20l6.6-7.2"/>',
   discord: '<path d="M8.5 17.5 7.5 19C5 18.5 3.3 17.4 2.5 16.5c0-4.5 1.3-8.5 3-11 1.4-.7 2.8-1 4-1.2l.6 1.3a14 14 0 0 1 3.8 0l.6-1.3c1.2.2 2.6.5 4 1.2 1.7 2.5 3 6.5 3 11-.8.9-2.5 2-5 2.5l-1-1.5"/><path d="M7.5 15.5c3 1.5 6 1.5 9 0"/><circle cx="9" cy="12" r="1.2"/><circle cx="15" cy="12" r="1.2"/>',
   tiktok: '<path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.5 3 2.5 5 5.5 5"/>',
@@ -151,7 +165,9 @@ const P = {
   reddit: '<circle cx="12" cy="14" r="7"/><path d="m12 7 1-4 4 1"/><circle cx="18" cy="4" r="1"/><path d="M9 16.5c1.5 1 4.5 1 6 0M9.5 12.5h.01M14.5 12.5h.01"/>',
   bluesky: '<path d="M12 11C10 7 6.5 4 4 4c-1.5 0-2 1-2 2.5S3 12 6 12c-3 1-3 4-1 5.5S10 17 12 13c2 4 5 6 7 4.5s2-4.5-1-5.5c3 0 4-4 4-5.5S21.5 4 20 4c-2.5 0-6 3-8 7z"/>',
   linkedin: '<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>',
-  patreon: '<circle cx="15" cy="9.5" r="6.5"/><path d="M3 3v18"/>'
+  patreon: '<circle cx="15" cy="9.5" r="6.5"/><path d="M3 3v18"/>',
+  producthunt: '<circle cx="12" cy="12" r="9.5"/><path d="M10 17V7h3.2a2.9 2.9 0 0 1 0 5.8H10"/>',
+  rss: '<path d="M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14"/><circle cx="6" cy="18" r="1.4"/>'
 };
 
 // Glyphs an app or category can use as its icon (subset of the icon set, in picker order).
@@ -233,7 +249,7 @@ function byline(app, base) {
 }
 
 export function coverHTML(app, opts = {}) {
-  if (app.cover) return `<div class="cover"><img src="${esc(media(app.cover, opts.mediaBase || ''))}" alt="${esc(app.name)} screenshot" loading="lazy"></div>`;
+  if (app.cover) { const src = esc(media(app.cover, opts.mediaBase || '')); return `<div class="cover fit"><img class="cv-bg" src="${src}" alt="" aria-hidden="true" loading="lazy"><img class="cv-img" src="${src}" alt="${esc(app.name)} screenshot" loading="lazy"></div>`; }
   return `<div class="cover gen"><span class="gen-grid"></span><span class="gen-glyph">${icon(app.glyph || 'code')}</span><span class="gen-name">${esc(app.name)}</span></div>`;
 }
 
@@ -293,12 +309,14 @@ export function detailHTML(app, opts = {}) {
   const shots = [app.cover, ...(app.screenshots || [])].filter(Boolean).filter((v, i, a) => a.indexOf(v) === i);
   const pl = primaryLink(app, base);
   const yt = youtubeId(app.videoUrl);
+  // a video file uploaded with the app's media (mp4/webm) plays right on the page
+  const vid = !yt && /\.(mp4|webm)$/i.test(app.videoUrl || '') && !/^https?:/i.test(app.videoUrl) ? app.videoUrl : '';
   const links = [];
   if (pl) links.push(`<a class="btn-acc lg" href="${esc(pl.url)}"${ext(pl.url)}>${esc(pl.label)}${icon('arrow')}</a>`);
   if (app.pageUrl && (!pl || app.pageUrl !== pl.raw)) links.push(`<a class="btn-soft" href="${esc(href(app.pageUrl, base))}"${ext(app.pageUrl)}>${icon('globe')}Product page</a>`);
   if (app.repoUrl && (!pl || app.repoUrl !== pl.raw)) links.push(`<a class="btn-soft" href="${esc(href(app.repoUrl, base))}" target="_blank" rel="noopener">${icon('github')}Source</a>`);
   if (app.docsUrl) links.push(`<a class="btn-soft" href="${esc(href(app.docsUrl, base))}"${ext(app.docsUrl)}>${icon('book')}Docs</a>`);
-  if (app.videoUrl && !yt) links.push(`<a class="btn-soft" href="${esc(href(app.videoUrl, base))}" target="_blank" rel="noopener">${icon('video')}Watch video</a>`);
+  if (app.videoUrl && !yt && !vid) links.push(`<a class="btn-soft" href="${esc(href(app.videoUrl, base))}" target="_blank" rel="noopener">${icon('video')}Watch video</a>`);
   if (!opts.preview) links.push(`<button type="button" class="btn-soft share" data-share="${esc(app.id)}">${icon('share')}<span>Share</span></button>`);
   return `<div class="detail" data-detail="${esc(app.id)}" style="${accentStyle(app)}">
   <header class="d-head">${appIcon(app, opts, 'lg')}<div class="d-title"><div class="d-row"><h2 id="dlg-title">${esc(app.name)}</h2>${app.version ? `<span class="ver-chip">${esc(app.version)}</span>` : ''}${statusPill(app, true)}${app.community ? `<span class="cpill">${icon('users')}Community</span>` : ''}</div><p>${esc(app.tagline)}</p>${byline(app, base)}</div></header>
@@ -307,6 +325,7 @@ export function detailHTML(app, opts = {}) {
     <div class="d-main">
       ${app.description ? `<section><h4>Overview</h4><div class="d-desc md">${md(app.description, base)}</div></section>` : ''}
       ${yt ? `<section><h4>Video</h4><div class="d-video">${ytEmbedHTML(yt, app.name)}</div></section>` : ''}
+      ${vid ? `<section><h4>Video</h4><div class="d-video"><video class="d-vid" src="${esc(media(vid, mb))}"${app.cover ? ` poster="${esc(media(app.cover, mb))}"` : ''} controls preload="metadata" playsinline></video></div></section>` : ''}
       ${(app.features || []).length ? `<section><h4>Highlights</h4><ul class="d-feats">${app.features.map(f => `<li>${icon('check')}<span>${esc(f)}</span></li>`).join('')}</ul></section>` : ''}
       ${app.installCommand ? `<section><h4>Get started</h4><div class="cmd"><code>${esc(app.installCommand)}</code><button type="button" class="copy" data-copy="${esc(app.installCommand)}">${icon('copy')}<span>Copy</span></button></div></section>` : ''}
       ${app.embedCode ? `<section><h4>${esc(app.embedTitle || 'More')}</h4><div class="embed-box">${opts.preview ? `<div class="embed-ph">${icon('code')}Custom embed shows here on the website</div>` : app.embedCode}</div></section>` : ''}

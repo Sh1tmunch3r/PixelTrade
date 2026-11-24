@@ -1,0 +1,44 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Copy your code · HexDrive</title><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><meta name="theme-color" content="#07080E">
+<link rel="icon" href="../assets/studio-mark.svg" type="image/svg+xml">
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#07080E;color:#EEF0F8;font:16px/1.55 Inter,'Segoe UI',system-ui,-apple-system,sans-serif}
+body{display:grid;place-items:center;padding:28px 16px;background:radial-gradient(60% 50% at 15% 0%,rgba(139,92,246,.28),transparent 70%),radial-gradient(50% 45% at 100% 100%,rgba(45,212,191,.18),transparent 70%),#07080E}
+.card{width:min(560px,100%);padding:30px 28px;border-radius:24px;background:linear-gradient(170deg,rgba(20,24,41,.95),rgba(11,13,22,.96));border:1px solid rgba(255,255,255,.09);box-shadow:0 40px 90px -40px rgba(0,0,0,.9)}
+.top{display:flex;align-items:center;gap:10px;color:#C9CEE0;font-weight:700;text-decoration:none}.top img{width:30px;height:30px}
+h1{margin:22px 0 4px;font-size:26px;letter-spacing:-.02em}.sub{margin:0 0 18px;color:#8C93AD}
+.code{position:relative;padding:18px;border-radius:16px;background:#05060B;border:1px solid rgba(94,234,212,.25);font:700 22px/1.35 ui-monospace,Consolas,Menlo,monospace;color:#5EEAD4;letter-spacing:.06em;text-align:center;word-break:break-all;user-select:all;cursor:text}
+.code.long{font-size:13px;font-weight:600;letter-spacing:0;text-align:left}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+button,.go{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 20px;border-radius:14px;border:0;font-weight:700;font-size:15px;font-family:inherit;cursor:pointer;text-decoration:none}
+button{flex:1;min-width:180px;color:#fff;background:linear-gradient(120deg,#8B5CF6,#0EA5E9);box-shadow:0 14px 34px -14px #8B5CF6}
+button.ok{background:linear-gradient(120deg,#10B981,#2DD4BF)}
+.go{color:#EEF0F8;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
+.note{margin:16px 0 0;color:#8C93AD;font-size:13.5px}.empty{display:none}.none .has{display:none}.none .empty{display:block}
+svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+</style></head><body>
+<main class="card" id="c"><a class="top" href="https://sh1tmunch3r.github.io/PixelTrade/"><img src="../assets/studio-mark.svg" alt="" onerror="this.remove()">HexDrive</a>
+<div class="has"><h1 id="t">Your code</h1><p class="sub" id="s">Copy it, then paste it where you need it.</p>
+<div class="code" id="v"></div>
+<div class="btns"><button type="button" id="b"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button><a class="go" id="n" hidden></a></div>
+<p class="note">This page only shows what was in your email link. Nothing is sent anywhere.</p></div>
+<div class="empty"><h1>Nothing to copy</h1><p class="sub">Open the Copy button from your email again, or copy the code straight from the email.</p><a class="go" href="https://sh1tmunch3r.github.io/PixelTrade/">Go to HexDrive</a></div>
+</main>
+<script>
+(function(){
+  var KEY='copy.page', p=new URLSearchParams(location.hash.slice(1)), d;
+  if(p.get('c')){d={c:p.get('c'),k:p.get('k')||'code',a:p.get('a')||'',n:p.get('n')||'',nl:p.get('nl')||'Continue'};try{sessionStorage.setItem(KEY,JSON.stringify(d))}catch(e){}history.replaceState(null,'',location.pathname)}
+  else{try{d=JSON.parse(sessionStorage.getItem(KEY)||'null')}catch(e){}}
+  var C=document.getElementById('c');if(!d||!d.c){C.className+=' none';return}
+  var v=document.getElementById('v'),b=document.getElementById('b'),lbl=b.querySelector('span');
+  v.textContent=d.c;if(d.c.length>32)v.className+=' long';
+  document.getElementById('t').textContent='Your '+d.k.toLowerCase()+(d.a?' for '+d.a:'');
+  document.getElementById('s').textContent=d.c.length>32?'It’s one long line. Copy it all, then paste it when the app asks.':'Copy it, then paste it where you need it.';
+  if(d.n.indexOf('https://')===0){var n=document.getElementById('n');n.href=d.n;n.textContent=d.nl+' →';n.hidden=false}
+  function done(){b.className='ok';lbl.textContent='Copied';setTimeout(function(){b.className='';lbl.textContent='Copy again'},2200)}
+  function fallback(){var r=document.createRange();r.selectNodeContents(v);var s=getSelection();s.removeAllRanges();s.addRange(r);var ok=false;try{ok=document.execCommand('copy')}catch(e){}if(ok)done();else lbl.textContent=/Mac|iP/.test(navigator.platform)?'Selected: press ⌘C':'Selected: press Ctrl+C'}
+  function copy(){var ok=false,t=setTimeout(function(){if(!ok)fallback()},900);if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(d.c).then(function(){ok=true;clearTimeout(t);done()},function(){ok=true;clearTimeout(t);fallback()});else{clearTimeout(t);fallback()}}
+  b.addEventListener('click',copy);
+  if(document.hasFocus())copy();
+})();
+</script></body></html>
